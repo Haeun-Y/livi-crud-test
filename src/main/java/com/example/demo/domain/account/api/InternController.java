@@ -1,7 +1,6 @@
 package com.example.demo.domain.account.api;
 
 import com.example.demo.domain.account.application.InternService;
-import com.example.demo.domain.account.domain.Account;
 import com.example.demo.domain.account.dto.AccountDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
