@@ -17,13 +17,12 @@ import javax.persistence.Table;
 @AllArgsConstructor
 public class Account {
 
-    public void updateName(String name) {
-        this.name = name;
-    }
-
     @Id
     private Long id;
 
     private String name;
 
+    public void updateName(String name) {
+        this.name = name;
+    }
 }

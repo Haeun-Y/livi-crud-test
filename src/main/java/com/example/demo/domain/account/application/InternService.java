@@ -11,50 +11,72 @@ import java.util.List;
 
 @Service
 public class InternService {
-    private final AccountRepository accountRepository;
 
+    private final AccountRepository accountRepository;
 
     public InternService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
     public AccountDto findAccount(Long id) {
+
         Account account = this.findAccountEntity(id);
-        return this.getAccountDto(account);
+
+        return this.mappingToAccountDto(account);
     }
 
     public List<AccountDto> findAllAccount() {
-        List<Account> accountList= accountRepository.findAll();
+
+        List<Account> accountList = accountRepository.findAll();
+
         List<AccountDto> accountDtoList = new ArrayList<>();
+
         for(Account account : accountList) {
-            accountDtoList.add(this.getAccountDto(account));
+            accountDtoList.add(this.mappingToAccountDto(account));
         }
+
         return accountDtoList;
     }
-    public AccountDto createAccount(AccountDto accountDto) {
+
+    /**
+     * 수정 내용
+     * 리턴값 X
+     */
+    public void createAccount(AccountDto accountDto) {
+
         Account account = Account.builder()
                         .id(accountDto.getId())
                         .name(accountDto.getName())
                         .build();
+
         accountRepository.save(account);
-        return this.findAccount(account.getId());
     }
 
     @Transactional
-    public AccountDto deleteAccount(Long id) {
-        Account account = this.findAccountEntity(id);
-        accountRepository.delete(account);
-        return this.getAccountDto(account);
+    public void updateAccount(AccountDto accountDto) {
+
+        Account account = this.findAccountEntity(accountDto.getId());
+
+        /**
+         * 수정 내용
+         * 빈 데이터에 대한 입력에 대한 예외처리를
+         * dto에서 vaildation을 통해 사전에 처리하는 방식으로 변경
+         */
+//        if(accountDto.getName()!=null)
+
+        account.updateName(accountDto.getName());
     }
 
     @Transactional
-    public AccountDto updateAccount(Long id, AccountDto accountDto) {
-        Account account = this.findAccountEntity(id);
+    public void deleteAccount(Long id) {
+        /**
+         * 수정 내용
+         * id 값으로 바로 삭제하는 방식으로 변경
+         * delete -> deleteById
+         */
+//        Account account = this.findAccountEntity(id);
 
-        if(accountDto.getName()!=null)
-            account.updateName(accountDto.getName());
-
-        return this.getAccountDto(account);
+        accountRepository.deleteById(id);
     }
 
     private Account findAccountEntity(Long id) {
@@ -62,7 +84,12 @@ public class InternService {
     }
 
 
-    public AccountDto getAccountDto(Account account) {
+    /**
+     * 수정 내용
+     * public -> private 변경
+     * getAccountDto -> mappingToAccountDto 네이밍 변경
+     */
+    private AccountDto mappingToAccountDto(Account account) {
         return AccountDto.builder()
                 .id(account.getId())
                 .name(account.getName()).build();
