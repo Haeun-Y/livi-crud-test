@@ -8,7 +8,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/intern")
@@ -38,35 +37,33 @@ public class InternController {
      */
 
     @GetMapping("/{id}")
-    public ResponseEntity<AccountDto> findAccount(@PathVariable Long id) {
+    public ResponseEntity<?> findAccount(@PathVariable Long id) {
         String location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
         return ResponseEntity.ok().header("Location", location).body(internService.findAccount(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<AccountDto>> findAllAccount() {
+    public ResponseEntity<?> findAllAccount() {
         String location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
         return ResponseEntity.ok().header("Location", location).body(internService.findAllAccount());
     }
 
     @PostMapping
-    public ResponseEntity<Void> createAccount(@Valid @RequestBody AccountDto accountDto) {
+    public ResponseEntity createAccount(@Valid @RequestBody AccountDto accountDto) {
         internService.createAccount(accountDto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
         return ResponseEntity.created(location).build();
     }
 
     @PatchMapping
-    public ResponseEntity<Void> updateAccount(@Valid @RequestBody AccountDto accountDto) {
+    public ResponseEntity updateAccount(@Valid @RequestBody AccountDto accountDto) {
         internService.updateAccount(accountDto);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
+    public ResponseEntity deleteAccount(@PathVariable Long id) {
         internService.deleteAccount(id);
-        String location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString();
-        return ResponseEntity.ok().header("Location", location).build();
+        return ResponseEntity.ok().build();
     }
 }

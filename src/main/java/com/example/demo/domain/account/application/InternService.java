@@ -29,6 +29,7 @@ public class InternService {
 
         List<Account> accountList = accountRepository.findAll();
 
+        // TODO : 연습 삼아서 스트림을 활용하여 객체변환 해볼 것!
         List<AccountDto> accountDtoList = new ArrayList<>();
 
         for(Account account : accountList) {
@@ -64,7 +65,7 @@ public class InternService {
          */
 //        if(accountDto.getName()!=null)
 
-        account.updateName(accountDto.getName());
+        account.setName(accountDto.getName());
     }
 
     @Transactional
