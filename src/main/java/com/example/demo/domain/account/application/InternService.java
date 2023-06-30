@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InternService {
@@ -30,13 +31,15 @@ public class InternService {
         List<Account> accountList = accountRepository.findAll();
 
         // TODO : 연습 삼아서 스트림을 활용하여 객체변환 해볼 것!
-        List<AccountDto> accountDtoList = new ArrayList<>();
+//        List<AccountDto> accountDtoList = new ArrayList<>();
+//
+//        for(Account account : accountList) {
+//            accountDtoList.add(this.mappingToAccountDto(account));
+//        }
 
-        for(Account account : accountList) {
-            accountDtoList.add(this.mappingToAccountDto(account));
-        }
-
-        return accountDtoList;
+        return accountList.stream()
+                .map(this::mappingToAccountDto)
+                .collect(Collectors.toList());
     }
 
     /**
